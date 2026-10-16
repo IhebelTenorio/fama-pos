@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.geometry.Insets?>
+
+<VBox xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.van_uber.famapos.controller.SessionSettingsModalController" stylesheets="@main.css" spacing="20" alignment="CENTER" prefWidth="550">
+    <padding>
+        <Insets top="30" right="40" bottom="30" left="40"/>
+    </padding>
+
+    <Label text="Configuración de Sesión" style="-fx-font-size: 24px; -fx-font-weight: bold;"/>
+    
+    <VBox spacing="10">
+        <Label text="Cambiar nombre de usuario:" styleClass="label" />
+        <TextField fx:id="userField" styleClass="input-field" />
+    </VBox>
+
+    <HBox spacing="15" alignment="CENTER_LEFT">
+        <VBox spacing="10" HBox.hgrow="ALWAYS">
+            <Label text="Nueva contraseña:" styleClass="label" />
+            <PasswordField fx:id="pwdField" styleClass="input-field" />
+        </VBox>
+        <VBox spacing="10" HBox.hgrow="ALWAYS">
+            <Label text="Confirmar nueva:" styleClass="label" />
+            <PasswordField fx:id="pwdConfirmField" styleClass="input-field" />
+        </VBox>
+    </HBox>
+
+    <Separator />
+    
+    <VBox spacing="10" style="-fx-background-color: #f2f2f2; -fx-padding: 15; -fx-background-radius: 5; -fx-border-color: #cccccc; -fx-border-radius: 5;">
+        <Label text="Autorización (Obligatorio para guardar):" style="-fx-font-size: 16px; -fx-text-fill: #555555; -fx-font-weight: bold;" />
+        <PasswordField fx:id="currentPwdField" promptText="Ingrese su contraseña actual..." styleClass="input-field" />
+    </VBox>
+    
+    <HBox spacing="10" alignment="CENTER_RIGHT">
+        <Button text="Cancelar" onAction="#onCancel" styleClass="nav-button" />
+        <Button text="Guardar Cambios" onAction="#onSaveCredentials" styleClass="nav-button" style="-fx-background-color: #2ecc71; -fx-text-fill: white; -fx-font-weight: bold;" />
+    </HBox>
+
+    <Separator />
+    
+    <Label text="Opciones de Sistema:" styleClass="label" />
+    
+    <HBox spacing="20" alignment="CENTER">
+        <Button text="Cerrar Sesión" onAction="#onLogout" styleClass="nav-button" style="-fx-background-color: #f39c12; -fx-text-fill: white;" maxWidth="9999" HBox.hgrow="ALWAYS" />
+        <Button text="Apagar POS" onAction="#onExitSystem" styleClass="nav-button" style="-fx-background-color: #e74c3c; -fx-text-fill: white;" maxWidth="9999" HBox.hgrow="ALWAYS" />
+    </HBox>
+</VBox>

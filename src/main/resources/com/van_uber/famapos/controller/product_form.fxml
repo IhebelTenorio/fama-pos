@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.geometry.Insets?>
+
+<VBox xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.van_uber.famapos.controller.ProductFormController" stylesheets="@main.css" spacing="10">
+    <padding>
+        <Insets top="20" right="20" bottom="20" left="20"/>
+    </padding>
+
+    <Label text="Formulario de Producto" style="-fx-font-size: 20px; -fx-font-weight: bold;"/>
+    
+    <GridPane hgap="10" vgap="10">
+        <Label text="Código de Barras:" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+        <TextField fx:id="barcodeField" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+        
+        <Label text="Nombre:" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+        <TextField fx:id="nameField" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+        
+        <Label text="Laboratorio:" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+        <TextField fx:id="laboratoryField" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+        
+        <Label text="Unidades Disp:" GridPane.columnIndex="2" GridPane.rowIndex="0"/>
+        <TextField fx:id="stockField" GridPane.columnIndex="3" GridPane.rowIndex="0"/>
+        
+        <Label text="Umbral (Aviso):" GridPane.columnIndex="2" GridPane.rowIndex="1"/>
+        <TextField fx:id="thresholdField" GridPane.columnIndex="3" GridPane.rowIndex="1"/>
+        
+        <Label text="Caducidad:" GridPane.columnIndex="2" GridPane.rowIndex="2"/>
+        <DatePicker fx:id="expirationPicker" GridPane.columnIndex="3" GridPane.rowIndex="2"/>
+        
+        <Label text="Costo:" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
+        <TextField fx:id="costField" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
+        
+        <Label text="Precio Público:" GridPane.columnIndex="2" GridPane.rowIndex="3"/>
+        <TextField fx:id="priceField" GridPane.columnIndex="3" GridPane.rowIndex="3"/>
+    </GridPane>
+
+    <Separator/>
+    <Label text="Compuestos / Gramajes"/>
+    <TextField fx:id="searchCompoundField" promptText="Buscar compuesto existente..."/>
+    <ListView fx:id="compoundsList" prefHeight="150"/>
+    
+    <HBox spacing="10">
+        <TextField fx:id="compoundField" promptText="Añadir nuevo compuesto que no existe..." HBox.hgrow="ALWAYS"/>
+        <Button text="Añadir" onAction="#onAddCompound" styleClass="button"/>
+    </HBox>
+    
+    <HBox spacing="10" alignment="CENTER_RIGHT">
+        <Button text="Cancelar" onAction="#onCancel" styleClass="button"/>
+        <Button text="Guardar" onAction="#onSave" style="-fx-background-color: #2ecc71; -fx-text-fill: white;" styleClass="button"/>
+    </HBox>
+</VBox>

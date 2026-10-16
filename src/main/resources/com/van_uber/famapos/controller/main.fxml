@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.control.Label?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.van_uber.famapos.controller.MainController" stylesheets="@main.css">
+    <center>
+        <Label text="Bienvenido a FaMa-POS" style="-fx-font-size: 24px;" />
+    </center>
+</BorderPane>

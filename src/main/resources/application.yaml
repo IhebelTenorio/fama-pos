@@ -1,0 +1,19 @@
+spring:
+  application:
+    name: famapos
+  datasource:
+    url: jdbc:postgresql://localhost:5433/famapos
+    username: famapos_admin
+    password: Laud9
+    driver-class-name: org.postgresql.Driver
+  sql:
+    init:
+      mode: never # Cambiado a never para que no intente recrear las tablas cada vez que inicias
+      schema-locations: classpath:database/famapos.sql
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: none
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+    show-sql: true

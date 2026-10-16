@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.FontWeight?>
+
+<VBox xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.van_uber.famapos.controller.TicketDetailModalController" spacing="15" stylesheets="@main.css" styleClass="root-pane" prefWidth="500" prefHeight="700">
+    <padding>
+        <Insets top="20" right="20" bottom="20" left="20"/>
+    </padding>
+
+    <!-- Top Action: Imprimir -->
+    <HBox alignment="CENTER_RIGHT">
+        <Button text="🖨️ Imprimir Ticket" onAction="#onPrint" styleClass="nav-button" style="-fx-background-color: #2196F3; -fx-text-fill: white;" />
+    </HBox>
+
+    <Separator />
+
+    <!-- TICKET CONTENT SCROLL -->
+    <ScrollPane VBox.vgrow="ALWAYS" fitToWidth="true" style="-fx-background-color: transparent;">
+        <VBox spacing="20" style="-fx-background-color: white; -fx-padding: 20; -fx-border-color: #eeeeee; -fx-border-radius: 5;">
+            
+            <!-- Header -->
+            <VBox alignment="CENTER" spacing="5">
+                <Label text="Farmacia Manuel" style="-fx-font-size: 24px; -fx-font-weight: bold;" />
+                <Label text="Ticket de Venta" style="-fx-font-size: 16px; -fx-text-fill: #666666;" />
+                <HBox alignment="CENTER" spacing="10">
+                    <Label fx:id="lblTicketId" style="-fx-font-size: 16px; -fx-font-weight: bold;" />
+                </HBox>
+                <HBox alignment="CENTER" spacing="20">
+                    <Label fx:id="lblFecha" style="-fx-font-size: 14px;" />
+                    <Label fx:id="lblHora" style="-fx-font-size: 14px;" />
+                </HBox>
+            </VBox>
+            
+            <Separator />
+            
+            <!-- Items -->
+            <VBox fx:id="itemsContainer" spacing="10" />
+            
+            <Separator />
+            
+            <!-- Totals -->
+            <GridPane hgap="10" vgap="10" alignment="CENTER_RIGHT">
+                <Label text="TOTAL:" GridPane.columnIndex="0" GridPane.rowIndex="0" style="-fx-font-size: 18px; -fx-font-weight: bold;"/>
+                <Label fx:id="lblTotal" GridPane.columnIndex="1" GridPane.rowIndex="0" style="-fx-font-size: 18px; -fx-font-weight: bold;"/>
+                
+                <Label text="Recibido:" GridPane.columnIndex="0" GridPane.rowIndex="1" style="-fx-font-size: 14px; -fx-text-fill: #666666;"/>
+                <Label fx:id="lblRecibido" GridPane.columnIndex="1" GridPane.rowIndex="1" style="-fx-font-size: 14px; -fx-text-fill: #666666;"/>
+                
+                <Label text="Cambio:" GridPane.columnIndex="0" GridPane.rowIndex="2" style="-fx-font-size: 14px; -fx-text-fill: #666666;"/>
+                <Label fx:id="lblCambio" GridPane.columnIndex="1" GridPane.rowIndex="2" style="-fx-font-size: 14px; -fx-text-fill: #666666;"/>
+            </GridPane>
+        </VBox>
+    </ScrollPane>
+
+    <Separator />
+
+    <!-- Bottom Actions -->
+    <VBox spacing="10">
+        <Button text="↩️ Reembolsar y Devolver Existencias" onAction="#onRefund" maxWidth="9999" style="-fx-background-color: #f39c12; -fx-text-fill: white; -fx-font-size: 16px; -fx-padding: 10;" />
+        <Button text="🗑️ Eliminar del Historial (Sin afectar almacén)" onAction="#onDelete" maxWidth="9999" style="-fx-background-color: #e74c3c; -fx-text-fill: white; -fx-font-size: 16px; -fx-padding: 10;" />
+        
+        <Region minHeight="10" />
+        <Button text="Cerrar" onAction="#onClose" maxWidth="9999" styleClass="nav-button" />
+    </VBox>
+</VBox>

@@ -1,0 +1,197 @@
+/* Import Lato font from Google Fonts (Nota: JavaFX no siempre carga web fonts por @import fácilmente, si falla el render se recurre a la fuente del sistema) */
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap');
+
+.root-pane {
+    -fx-background-color: #ffffff;
+    -fx-font-family: 'Lato', sans-serif;
+}
+
+.button {
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.24), 1, 0, 1, 1);
+}
+
+.login-box {
+    -fx-background-color: #f2f2f2;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.15), 15, 0, 0, 5);
+    -fx-background-radius: 5;
+    -fx-border-radius: 5;
+}
+
+.program-logo-text {
+    -fx-font-size: 36px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #555555;
+    -fx-font-family: 'Lato', sans-serif;
+}
+
+.label {
+    -fx-font-family: 'Lato', sans-serif;
+    -fx-font-size: 20px;
+    -fx-text-fill: #333333;
+}
+
+.input-field {
+    -fx-font-family: 'Lato', sans-serif;
+    -fx-font-size: 20px;
+    -fx-background-radius: 5;
+    -fx-border-radius: 5;
+    -fx-padding: 8;
+    -fx-border-color: #cccccc;
+    -fx-background-color: #ffffff;
+}
+
+.input-field:focused {
+    -fx-border-color: #a5be00;
+}
+
+.login-button {
+    -fx-font-family: 'Lato', sans-serif;
+    -fx-font-size: 20px;
+    -fx-background-color: #D9D9D9;
+    -fx-border-color: #909090;
+    -fx-background-radius: 5;
+    -fx-border-radius: 5;
+    -fx-padding: 8 20 8 20;
+    -fx-cursor: hand;
+    -fx-text-fill: #333333;
+}
+
+.login-button:hover {
+    -fx-text-fill: #a5be00;
+}
+
+.error-label {
+    -fx-text-fill: #d32f2f;
+    -fx-font-size: 20px;
+}
+
+/* --- Sales Module --- */
+.search-field {
+    -fx-font-size: 20px;
+    -fx-background-radius: 5;
+    -fx-border-radius: 5;
+    -fx-padding: 10;
+    -fx-border-color: #cccccc;
+}
+
+.icon-button {
+    -fx-font-size: 20px;
+    -fx-background-color: #D9D9D9;
+    -fx-border-radius: 5;
+    -fx-background-radius: 5;
+    -fx-padding: 8 15;
+    -fx-cursor: hand;
+}
+.icon-button:hover {
+    -fx-text-fill: #a5be00;
+}
+
+.sales-table {
+    -fx-font-size: 20px;
+    -fx-border-color: #cccccc;
+    -fx-border-radius: 5;
+    -fx-background-radius: 5;
+}
+
+.compuestos-table {
+    -fx-font-size: 16px;
+    -fx-border-color: #cccccc;
+    -fx-border-radius: 5;
+    -fx-background-radius: 5;
+}
+
+.nav-button {
+    -fx-font-size: 20px;
+    -fx-background-color: #D9D9D9;
+    -fx-border-color: #909090;
+    -fx-border-radius: 5;
+    -fx-background-radius: 5;
+    -fx-padding: 10 20;
+    -fx-cursor: hand;
+}
+.nav-button:hover {
+    -fx-text-fill: #a5be00;
+}
+
+.black-box-label {
+    -fx-background-color: #000000;
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 20px;
+    -fx-padding: 10;
+    -fx-background-radius: 5;
+}
+
+.large-text {
+    -fx-font-size: 32px;
+}
+
+.huge-text {
+    -fx-font-size: 48px;
+}
+
+.circle-button {
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 50em;
+    -fx-min-width: 50px;
+    -fx-min-height: 50px;
+    -fx-cursor: hand;
+}
+
+.minus-button {
+    -fx-background-color: #ff6b6b;
+    -fx-text-fill: #000000;
+}
+.minus-button:hover {
+    -fx-background-color: #ff4c4c;
+}
+
+.plus-button {
+    -fx-background-color: #8cff66;
+    -fx-text-fill: #000000;
+}
+.plus-button:hover {
+    -fx-background-color: #72f04b;
+}
+
+.pay-cash-button {
+    -fx-background-color: #2b7a0b;
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 24px;
+    -fx-background-radius: 5;
+    -fx-padding: 15;
+    -fx-cursor: hand;
+}
+.pay-cash-button:hover {
+    -fx-background-color: #3b9a1b;
+}
+
+.pay-card-button {
+    -fx-background-color: #004aad;
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 24px;
+    -fx-background-radius: 5;
+    -fx-padding: 15;
+    -fx-cursor: hand;
+}
+.pay-card-button:hover {
+    -fx-background-color: #005ce6;
+}
+
+/* Toggle Filter Buttons */
+.filter-toggle-button {
+    -fx-font-size: 20px;
+    -fx-background-color: #D9D9D9;
+    -fx-border-color: #909090;
+    -fx-border-radius: 5;
+    -fx-background-radius: 5;
+    -fx-padding: 10 20;
+    -fx-cursor: hand;
+}
+.filter-toggle-button:hover {
+    -fx-text-fill: #a5be00;
+}
+.filter-toggle-button:selected {
+    -fx-background-color: #555555;
+    -fx-text-fill: #ffffff;
+}
