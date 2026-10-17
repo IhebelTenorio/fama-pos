@@ -34,6 +34,7 @@ public class ProductFormController {
     @FXML private TextField barcodeField;
     @FXML private TextField nameField;
     @FXML private TextField laboratoryField;
+    @FXML private ComboBox<String> categoryComboBox;
     @FXML private TextField stockField;
     @FXML private TextField thresholdField;
     @FXML private DatePicker expirationPicker;
@@ -62,11 +63,30 @@ public class ProductFormController {
         searchCompoundField.clear();
         compoundField.clear();
 
+        // Cargar categorías existentes para autocompletar
+        List<String> distinctCategories = productRepository.findAllDistinctCategories();
+        if (distinctCategories == null) {
+            distinctCategories = new ArrayList<>();
+        }
+        categoryComboBox.getItems().setAll(distinctCategories);
+
         if (product != null && product.getCodigoBarras() != null) {
             barcodeField.setText(product.getCodigoBarras());
             barcodeField.setDisable(true); // Can't change PK
             nameField.setText(product.getNombre());
             laboratoryField.setText(product.getLaboratorio());
+            
+            if (product.getCategoria() != null && !product.getCategoria().isEmpty()) {
+                if (!categoryComboBox.getItems().contains(product.getCategoria())) {
+                    categoryComboBox.getItems().add(product.getCategoria());
+                }
+                categoryComboBox.setValue(product.getCategoria());
+                categoryComboBox.getEditor().setText(product.getCategoria());
+            } else {
+                categoryComboBox.setValue(null);
+                categoryComboBox.getEditor().clear();
+            }
+
             stockField.setText(String.valueOf(product.getUnidadesDisponibles()));
             thresholdField.setText(String.valueOf(product.getUmbralUnidades()));
             expirationPicker.setValue(product.getFechaCaducidadProxima());
@@ -81,6 +101,8 @@ public class ProductFormController {
             barcodeField.setDisable(false);
             nameField.clear();
             laboratoryField.clear();
+            categoryComboBox.setValue(null);
+            categoryComboBox.getEditor().clear();
             stockField.clear();
             thresholdField.clear();
             expirationPicker.setValue(null);
@@ -147,6 +169,18 @@ public class ProductFormController {
             p.setCodigoBarras(barcodeField.getText().trim());
             p.setNombre(nameField.getText().trim());
             p.setLaboratorio(laboratoryField.getText().trim());
+
+            String catText = categoryComboBox.getEditor().getText();
+            if (catText == null || catText.trim().isEmpty()) {
+                catText = categoryComboBox.getValue();
+            }
+            if (catText != null) {
+                catText = catText.trim();
+                p.setCategoria(catText.isEmpty() ? null : catText);
+            } else {
+                p.setCategoria(null);
+            }
+
             p.setUnidadesDisponibles(Integer.parseInt(stockField.getText().trim()));
             p.setUmbralUnidades(Integer.parseInt(thresholdField.getText().trim()));
             p.setFechaCaducidadProxima(expirationPicker.getValue());

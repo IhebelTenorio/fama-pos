@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.geometry.Insets?>
+
+<VBox xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.van_uber.famapos.controller.SummaryController" stylesheets="@main.css" styleClass="root-pane" spacing="15">
+    <padding>
+        <Insets top="15" right="20" bottom="15" left="20"/>
+    </padding>
+
+    <!-- HEADER -->
+    <HBox alignment="CENTER_LEFT" spacing="15">
+        <Label text="Resumen de Ventas y Análisis Financiero" styleClass="program-logo-text" style="-fx-font-size: 26px;"/>
+        <Region HBox.hgrow="ALWAYS"/>
+        <Button text="Volver al Almacén" onAction="#onBackToWarehouse" styleClass="nav-button"/>
+    </HBox>
+
+    <!-- TOP KPI CARDS -->
+    <HBox spacing="15">
+        <VBox styleClass="kpi-card" HBox.hgrow="ALWAYS">
+            <Label text="VENTAS DE HOY" styleClass="kpi-title"/>
+            <Label fx:id="lblKpiHoy" text="\$ 0.00" styleClass="kpi-value" style="-fx-text-fill: #27ae60;"/>
+            <Label fx:id="lblKpiHoyTickets" text="0 tickets emitidos" style="-fx-text-fill: #888; -fx-font-size: 12px;"/>
+        </VBox>
+
+        <VBox styleClass="kpi-card" HBox.hgrow="ALWAYS">
+            <Label text="SEMANA ACTUAL" styleClass="kpi-title"/>
+            <Label fx:id="lblKpiSemana" text="\$ 0.00" styleClass="kpi-value" style="-fx-text-fill: #2980b9;"/>
+            <Label text="Lunes a la fecha" style="-fx-text-fill: #888; -fx-font-size: 12px;"/>
+        </VBox>
+
+        <VBox styleClass="kpi-card" HBox.hgrow="ALWAYS">
+            <Label text="MES ANTERIOR" styleClass="kpi-title"/>
+            <Label fx:id="lblKpiMesAnt" text="\$ 0.00" styleClass="kpi-value" style="-fx-text-fill: #8e44ad;"/>
+            <Label text="Corte mensual cerrado" style="-fx-text-fill: #888; -fx-font-size: 12px;"/>
+        </VBox>
+
+        <VBox styleClass="kpi-card" HBox.hgrow="ALWAYS">
+            <Label text="UTILIDAD ESTIMADA (RANGO)" styleClass="kpi-title"/>
+            <Label fx:id="lblKpiGanancia" text="\$ 0.00" styleClass="kpi-value" style="-fx-text-fill: #d35400;"/>
+            <Label text="Ingresos menos costo de compra" style="-fx-text-fill: #888; -fx-font-size: 12px;"/>
+        </VBox>
+    </HBox>
+
+    <!-- FILTER & CONTROL TOOLBAR -->
+    <VBox spacing="10" style="-fx-background-color: #f8f9fa; -fx-padding: 12; -fx-border-color: #dee2e6; -fx-border-radius: 6; -fx-background-radius: 6;">
+        <HBox spacing="12" alignment="CENTER_LEFT">
+            <VBox spacing="3">
+                <Label text="Período:" style="-fx-font-size: 12px; -fx-font-weight: bold; -fx-text-fill: #555;"/>
+                <ComboBox fx:id="cmbPeriodo" prefWidth="150"/>
+            </VBox>
+
+            <VBox spacing="3">
+                <Label text="Desde:" style="-fx-font-size: 12px; -fx-font-weight: bold; -fx-text-fill: #555;"/>
+                <DatePicker fx:id="dpStart" prefWidth="135"/>
+            </VBox>
+
+            <VBox spacing="3">
+                <Label text="Hasta:" style="-fx-font-size: 12px; -fx-font-weight: bold; -fx-text-fill: #555;"/>
+                <DatePicker fx:id="dpEnd" prefWidth="135"/>
+            </VBox>
+
+            <VBox spacing="3">
+                <Label text="Agrupar Filas por:" style="-fx-font-size: 12px; -fx-font-weight: bold; -fx-text-fill: #555;"/>
+                <ComboBox fx:id="cmbAgrupacion" prefWidth="160"/>
+            </VBox>
+
+            <VBox spacing="3">
+                <Label text="Métrica de Celda:" style="-fx-font-size: 12px; -fx-font-weight: bold; -fx-text-fill: #555;"/>
+                <ComboBox fx:id="cmbMetrica" prefWidth="170"/>
+            </VBox>
+
+            <Region HBox.hgrow="ALWAYS"/>
+
+            <Button text="📥 Exportar Matriz a CSV" onAction="#onExportPivotCsv" styleClass="button" style="-fx-background-color: #2ecc71; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 8 16;"/>
+        </HBox>
+
+        <HBox spacing="12" alignment="CENTER_LEFT">
+            <VBox spacing="3">
+                <Label text="Filtrar Laboratorio:" style="-fx-font-size: 12px; -fx-font-weight: bold; -fx-text-fill: #555;"/>
+                <ComboBox fx:id="cmbFiltroLab" prefWidth="200"/>
+            </VBox>
+
+            <VBox spacing="3">
+                <Label text="Filtrar Categoría:" style="-fx-font-size: 12px; -fx-font-weight: bold; -fx-text-fill: #555;"/>
+                <ComboBox fx:id="cmbFiltroCat" prefWidth="200"/>
+            </VBox>
+
+            <VBox spacing="3" HBox.hgrow="ALWAYS">
+                <Label text="Búsqueda rápida en resultados:" style="-fx-font-size: 12px; -fx-font-weight: bold; -fx-text-fill: #555;"/>
+                <TextField fx:id="txtSearch" promptText="Buscar producto o texto..." style="-fx-font-size: 14px; -fx-padding: 5;"/>
+            </VBox>
+
+            <Button text="Refrescar" onAction="#refreshPivot" styleClass="button" style="-fx-background-color: #34495e; -fx-text-fill: white; -fx-padding: 8 16;"/>
+        </HBox>
+    </VBox>
+
+    <!-- DYNAMIC PIVOT TABLE -->
+    <TableView fx:id="pivotTable" VBox.vgrow="ALWAYS" styleClass="sales-table">
+        <columnResizePolicy>
+            <TableView fx:constant="UNCONSTRAINED_RESIZE_POLICY"/>
+        </columnResizePolicy>
+    </TableView>
+
+    <!-- FOOTER STATUS -->
+    <HBox alignment="CENTER_LEFT" spacing="10">
+        <Label fx:id="lblStatus" text="Listo." style="-fx-font-size: 13px; -fx-text-fill: #7f8c8d;"/>
+    </HBox>
+</VBox>

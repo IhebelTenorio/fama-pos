@@ -20,6 +20,9 @@
         <Label text="Laboratorio:" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
         <TextField fx:id="laboratoryField" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
         
+        <Label text="Categoría:" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
+        <ComboBox fx:id="categoryComboBox" editable="true" promptText="Elegir o escribir..." maxWidth="9999" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
+        
         <Label text="Unidades Disp:" GridPane.columnIndex="2" GridPane.rowIndex="0"/>
         <TextField fx:id="stockField" GridPane.columnIndex="3" GridPane.rowIndex="0"/>
         
@@ -29,11 +32,11 @@
         <Label text="Caducidad:" GridPane.columnIndex="2" GridPane.rowIndex="2"/>
         <DatePicker fx:id="expirationPicker" GridPane.columnIndex="3" GridPane.rowIndex="2"/>
         
-        <Label text="Costo:" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
-        <TextField fx:id="costField" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
+        <Label text="Costo:" GridPane.columnIndex="2" GridPane.rowIndex="3"/>
+        <TextField fx:id="costField" GridPane.columnIndex="3" GridPane.rowIndex="3"/>
         
-        <Label text="Precio Público:" GridPane.columnIndex="2" GridPane.rowIndex="3"/>
-        <TextField fx:id="priceField" GridPane.columnIndex="3" GridPane.rowIndex="3"/>
+        <Label text="Precio Público:" GridPane.columnIndex="0" GridPane.rowIndex="4"/>
+        <TextField fx:id="priceField" GridPane.columnIndex="1" GridPane.rowIndex="4"/>
     </GridPane>
 
     <Separator/>

@@ -16,6 +16,7 @@
         <ToggleButton fx:id="btnFilterStock" text="Stock" onAction="#onLowStockAlerts" styleClass="filter-toggle-button" maxWidth="9999" wrapText="true" />
         <Button text="Nuevo Producto" onAction="#onNewProduct" styleClass="nav-button" maxWidth="9999" />
         <Button text="Exportar a CSV" onAction="#onExportCsv" styleClass="nav-button" style="-fx-text-fill: #2ecc71;" maxWidth="9999" />
+        <Button text="Resumen de Ventas" onAction="#onSummary" styleClass="nav-button" style="-fx-text-fill: #3498db; -fx-font-weight: bold;" maxWidth="9999" />
         <Button text="Editar Producto" onAction="#onEditProduct" styleClass="nav-button" maxWidth="9999" />
         <Button text="Cambiar Estado" onAction="#onToggleStatus" styleClass="button" style="-fx-font-size: 16px; -fx-padding: 10 20; -fx-background-radius: 5; -fx-background-color: #f1c40f; -fx-text-fill: #000000; -fx-font-weight: bold;" maxWidth="9999" />
         <Button text="Eliminar Producto" onAction="#onDeleteProduct" styleClass="button" style="-fx-font-size: 16px; -fx-padding: 10 20; -fx-background-radius: 5; -fx-background-color: #e74c3c; -fx-text-fill: #ffffff; -fx-font-weight: bold;" maxWidth="9999" />
@@ -28,21 +29,22 @@
     <!-- RIGHT SIDE: Data Table -->
     <VBox HBox.hgrow="ALWAYS" spacing="10">
         <HBox spacing="10">
-            <TextField fx:id="searchField" promptText="Buscar producto por nombre o código" styleClass="search-field" HBox.hgrow="ALWAYS"/>
+            <TextField fx:id="searchField" promptText="Buscar producto por nombre, código o categoría..." styleClass="search-field" HBox.hgrow="ALWAYS"/>
             <Button text="🔍" styleClass="icon-button"/>
         </HBox>
         
         <TableView fx:id="productTable" VBox.vgrow="ALWAYS" styleClass="sales-table">
             <columns>
-                <TableColumn fx:id="colBarcode" text="Código" prefWidth="180"/>
-                <TableColumn fx:id="colName" text="Producto" prefWidth="300"/>
-                <TableColumn fx:id="colLaboratory" text="Laboratorio" prefWidth="250"/>
-                <TableColumn fx:id="colCompounds" text="Compuesto(s)" prefWidth="300"/>
-                <TableColumn fx:id="colStock" text="Stock" prefWidth="100"/>
-                <TableColumn fx:id="colThreshold" text="Umbral" prefWidth="100"/>
-                <TableColumn fx:id="colExpiration" text="Caducidad" prefWidth="150"/>
-                <TableColumn fx:id="colCost" text="Costo" prefWidth="120"/>
-                <TableColumn fx:id="colPrice" text="Precio" prefWidth="120"/>
+                <TableColumn fx:id="colBarcode" text="Código" prefWidth="160"/>
+                <TableColumn fx:id="colName" text="Producto" prefWidth="280"/>
+                <TableColumn fx:id="colCategory" text="Categoría" prefWidth="150"/>
+                <TableColumn fx:id="colLaboratory" text="Laboratorio" prefWidth="200"/>
+                <TableColumn fx:id="colCompounds" text="Compuesto(s)" prefWidth="260"/>
+                <TableColumn fx:id="colStock" text="Stock" prefWidth="90"/>
+                <TableColumn fx:id="colThreshold" text="Umbral" prefWidth="90"/>
+                <TableColumn fx:id="colExpiration" text="Caducidad" prefWidth="130"/>
+                <TableColumn fx:id="colCost" text="Costo" prefWidth="100"/>
+                <TableColumn fx:id="colPrice" text="Precio" prefWidth="100"/>
                 <TableColumn fx:id="colActive" text="Estado" prefWidth="100"/>
             </columns>
             <columnResizePolicy>

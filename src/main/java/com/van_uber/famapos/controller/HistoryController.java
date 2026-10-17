@@ -1,10 +1,12 @@
 package com.van_uber.famapos.controller;
+
 import java.io.PrintWriter;
 import javafx.stage.FileChooser;
 import java.io.File;
 
-
+import com.van_uber.famapos.domain.Comprar;
 import com.van_uber.famapos.domain.Ticket;
+import com.van_uber.famapos.repository.ComprarRepository;
 import com.van_uber.famapos.repository.TicketRepository;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -32,6 +34,7 @@ import java.util.List;
 public class HistoryController {
 
     private final TicketRepository ticketRepository;
+    private final ComprarRepository comprarRepository;
     private final FxWeaver fxWeaver;
 
     @FXML
@@ -48,13 +51,16 @@ public class HistoryController {
     @FXML
     private TextField searchField;
     @FXML
-    private DatePicker datePicker;
+    private DatePicker startDatePicker;
+    @FXML
+    private DatePicker endDatePicker;
 
     private ObservableList<Ticket> ticketList = FXCollections.observableArrayList();
 
     @Autowired
-    public HistoryController(TicketRepository ticketRepository, FxWeaver fxWeaver) {
+    public HistoryController(TicketRepository ticketRepository, ComprarRepository comprarRepository, FxWeaver fxWeaver) {
         this.ticketRepository = ticketRepository;
+        this.comprarRepository = comprarRepository;
         this.fxWeaver = fxWeaver;
     }
 
@@ -78,11 +84,12 @@ public class HistoryController {
                     openTicketModal(rowData);
                 }
             });
-            return row ;
+            return row;
         });
 
         searchField.textProperty().addListener((obs, oldV, newV) -> filterTickets());
-        datePicker.valueProperty().addListener((obs, oldV, newV) -> filterTickets());
+        startDatePicker.valueProperty().addListener((obs, oldV, newV) -> filterTickets());
+        endDatePicker.valueProperty().addListener((obs, oldV, newV) -> filterTickets());
     }
 
     private void loadTickets() {
@@ -95,12 +102,14 @@ public class HistoryController {
 
     private void filterTickets() {
         String idFilter = searchField.getText() == null ? "" : searchField.getText().trim();
-        LocalDate dateFilter = datePicker.getValue();
+        LocalDate start = startDatePicker.getValue();
+        LocalDate end = endDatePicker.getValue();
 
         ObservableList<Ticket> filtered = FXCollections.observableArrayList();
         for (Ticket t : ticketList) {
             boolean matchesId = idFilter.isEmpty() || String.valueOf(t.getIdTicket()).contains(idFilter);
-            boolean matchesDate = dateFilter == null || t.getFecha().equals(dateFilter);
+            boolean matchesDate = (start == null || !t.getFecha().isBefore(start)) 
+                    && (end == null || !t.getFecha().isAfter(end));
             
             if (matchesId && matchesDate) {
                 filtered.add(t);
@@ -110,9 +119,38 @@ public class HistoryController {
     }
 
     @FXML
+    public void onPresetToday(ActionEvent event) {
+        LocalDate today = LocalDate.now();
+        startDatePicker.setValue(today);
+        endDatePicker.setValue(today);
+    }
+
+    @FXML
+    public void onPresetWeek(ActionEvent event) {
+        LocalDate today = LocalDate.now();
+        startDatePicker.setValue(today.minusDays(7));
+        endDatePicker.setValue(today);
+    }
+
+    @FXML
+    public void onPresetMonth(ActionEvent event) {
+        LocalDate today = LocalDate.now();
+        startDatePicker.setValue(today.minusMonths(1));
+        endDatePicker.setValue(today);
+    }
+
+    @FXML
+    public void onPresetYear(ActionEvent event) {
+        LocalDate today = LocalDate.now();
+        startDatePicker.setValue(today.minusYears(1));
+        endDatePicker.setValue(today);
+    }
+
+    @FXML
     public void onClearFilters(ActionEvent event) {
         searchField.clear();
-        datePicker.setValue(null);
+        startDatePicker.setValue(null);
+        endDatePicker.setValue(null);
     }
 
     @FXML
@@ -162,6 +200,49 @@ public class HistoryController {
                         t.getCambio());
                 }
                 showAlert(Alert.AlertType.INFORMATION, "Exportación Exitosa", "El historial de tickets ha sido exportado correctamente.");
+            } catch (Exception e) {
+                showAlert(Alert.AlertType.ERROR, "Error de Exportación", "Hubo un error al guardar el archivo: " + e.getMessage());
+            }
+        }
+    }
+
+    @FXML
+    public void onExportDetailedSalesCsv(ActionEvent event) {
+        if (ticketTable.getItems().isEmpty()) {
+            showAlert(Alert.AlertType.WARNING, "Sin Registros", "No hay tickets visibles para exportar el detalle.");
+            return;
+        }
+
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Exportar Detalle de Ventas a CSV");
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Archivo CSV", "*.csv"));
+        fileChooser.setInitialFileName("detalle_ventas_" + java.time.LocalDate.now().toString() + ".csv");
+        File file = fileChooser.showSaveDialog(((Node) event.getSource()).getScene().getWindow());
+
+        if (file != null) {
+            try (PrintWriter writer = new PrintWriter(file, "UTF-8")) {
+                writer.println("FolioTicket,Fecha,Hora,CodigoBarras,Producto,Categoria,Laboratorio,Cantidad,PrecioVenta");
+                for (Ticket t : ticketTable.getItems()) {
+                    List<Comprar> purchasedItems = comprarRepository.findById_IdTicket(t.getIdTicket());
+                    for (Comprar c : purchasedItems) {
+                        String prodName = c.getProduct() != null && c.getProduct().getNombre() != null ? c.getProduct().getNombre().replace("\"", "\"\"") : "";
+                        String prodCat = c.getProduct() != null && c.getProduct().getCategoria() != null ? c.getProduct().getCategoria().replace("\"", "\"\"") : "";
+                        String prodLab = c.getProduct() != null && c.getProduct().getLaboratorio() != null ? c.getProduct().getLaboratorio().replace("\"", "\"\"") : "";
+                        String prodCode = c.getProduct() != null && c.getProduct().getCodigoBarras() != null ? c.getProduct().getCodigoBarras() : "";
+
+                        writer.printf("%d,%s,%s,\"%s\",\"%s\",\"%s\",\"%s\",%d,%s\n",
+                                t.getIdTicket(),
+                                t.getFecha() != null ? t.getFecha().toString() : "",
+                                t.getHora() != null ? t.getHora().toString() : "",
+                                prodCode,
+                                prodName,
+                                prodCat,
+                                prodLab,
+                                c.getCantidad(),
+                                c.getPrecioVenta());
+                    }
+                }
+                showAlert(Alert.AlertType.INFORMATION, "Exportación Exitosa", "El detalle completo de ventas ha sido exportado correctamente a CSV.");
             } catch (Exception e) {
                 showAlert(Alert.AlertType.ERROR, "Error de Exportación", "Hubo un error al guardar el archivo: " + e.getMessage());
             }

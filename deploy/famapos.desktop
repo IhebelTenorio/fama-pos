@@ -1,0 +1,10 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=FaMa POS
+Comment=Punto de Venta Farmacia Manuel
+Exec=/opt/famapos/run.sh
+Icon=/opt/famapos/images/Vanuber_Logo.png
+Terminal=false
+StartupNotify=true
+Categories=Office;Finance;

@@ -24,7 +24,6 @@ import java.io.PrintWriter;
 import javafx.stage.FileChooser;
 import java.io.File;
 
-
 @Component
 @FxmlView("inventory.fxml")
 public class InventoryController {
@@ -38,6 +37,8 @@ public class InventoryController {
     private TableColumn<Product, String> colBarcode;
     @FXML
     private TableColumn<Product, String> colName;
+    @FXML
+    private TableColumn<Product, String> colCategory;
     @FXML
     private TableColumn<Product, String> colLaboratory;
     @FXML
@@ -73,6 +74,24 @@ public class InventoryController {
     public void initialize() {
         colBarcode.setCellValueFactory(new PropertyValueFactory<>("codigoBarras"));
         colName.setCellValueFactory(new PropertyValueFactory<>("nombre"));
+        
+        if (colCategory != null) {
+            colCategory.setCellValueFactory(new PropertyValueFactory<>("categoria"));
+            colCategory.setCellFactory(col -> new TableCell<Product, String>() {
+                @Override
+                protected void updateItem(String item, boolean empty) {
+                    super.updateItem(item, empty);
+                    if (empty || item == null || item.trim().isEmpty()) {
+                        setText("-");
+                        setStyle("-fx-text-fill: #888888; -fx-alignment: CENTER;");
+                    } else {
+                        setText(item);
+                        setStyle("-fx-alignment: CENTER_LEFT;");
+                    }
+                }
+            });
+        }
+        
         colLaboratory.setCellValueFactory(new PropertyValueFactory<>("laboratorio"));
         colCompounds.setCellValueFactory(new PropertyValueFactory<>("compuestosString"));
         colStock.setCellValueFactory(new PropertyValueFactory<>("unidadesDisponibles"));
@@ -113,7 +132,12 @@ public class InventoryController {
         ObservableList<Product> filtered = FXCollections.observableArrayList();
 
         for (Product p : productList) {
-            boolean matchesSearch = query.isEmpty() || p.getNombre().toLowerCase().contains(query) || p.getCodigoBarras().toLowerCase().contains(query);
+            boolean matchesSearch = query.isEmpty() 
+                    || (p.getNombre() != null && p.getNombre().toLowerCase().contains(query))
+                    || (p.getCodigoBarras() != null && p.getCodigoBarras().toLowerCase().contains(query))
+                    || (p.getCategoria() != null && p.getCategoria().toLowerCase().contains(query))
+                    || (p.getLaboratorio() != null && p.getLaboratorio().toLowerCase().contains(query));
+                    
             boolean matchesExp = !filterExp || (p.getFechaCaducidadProxima() != null && !p.getFechaCaducidadProxima().isAfter(threeWeeksFromNow));
             boolean matchesStock = !filterStock || (p.getUnidadesDisponibles() <= p.getUmbralUnidades());
 
@@ -140,11 +164,12 @@ public class InventoryController {
         
         if (file != null) {
             try (PrintWriter writer = new PrintWriter(file, "UTF-8")) {
-                writer.println("CodigoBarras,Nombre,Laboratorio,Compuestos,Stock,Umbral,Caducidad,Costo,PrecioPublico,Activo");
+                writer.println("CodigoBarras,Nombre,Categoria,Laboratorio,Compuestos,Stock,Umbral,Caducidad,Costo,PrecioPublico,Activo");
                 for (Product p : productTable.getItems()) { // Emulate what is currently visible/filtered!
-                    writer.printf("\"%s\",\"%s\",\"%s\",\"%s\",%d,%d,%s,%s,%s,%s\n",
+                    writer.printf("\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",%d,%d,%s,%s,%s,%s\n",
                         p.getCodigoBarras(), 
                         p.getNombre() != null ? p.getNombre().replace("\"", "\"\"") : "", 
+                        p.getCategoria() != null ? p.getCategoria().replace("\"", "\"\"") : "",
                         p.getLaboratorio() != null ? p.getLaboratorio().replace("\"", "\"\"") : "", 
                         p.getCompuestosString() != null ? p.getCompuestosString().replace("\"", "\"\"") : "",
                         p.getUnidadesDisponibles(), 
@@ -199,6 +224,13 @@ public class InventoryController {
     @FXML
     public void onLowStockAlerts(ActionEvent event) {
         applyFilters();
+    }
+
+    @FXML
+    public void onSummary(ActionEvent event) {
+        Parent root = fxWeaver.loadView(SummaryController.class);
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        stage.getScene().setRoot(root);
     }
 
     @FXML

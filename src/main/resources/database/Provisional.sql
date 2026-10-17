@@ -1,9 +1,10 @@
--- Así va quedando 13/08/2026
+-- Así va quedando 13/08/2026 - Actualizado con Categoría
 
 -- 1. Crear tabla PRODUCTO
 CREATE TABLE PRODUCTO (
     CodigoBarras VARCHAR(50) NOT NULL,
     Nombre VARCHAR(150) NOT NULL,
+    Categoria VARCHAR(100),
     UnidadesDisponibles INT NOT NULL,
     UmbralUnidades INT NOT NULL,
     FechaCaducidadProxima DATE,

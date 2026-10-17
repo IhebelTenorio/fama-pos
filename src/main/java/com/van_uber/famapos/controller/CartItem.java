@@ -70,6 +70,11 @@ public class CartItem {
         return product != null && product.getLaboratorio() != null ? product.getLaboratorio() : "";
     }
 
+    public String getCategoria() {
+        return product != null && product.getCategoria() != null && !product.getCategoria().trim().isEmpty() 
+                ? product.getCategoria() : "-";
+    }
+
     public String getPrecio() {
         return "$ " + subtotal.toString();
     }

@@ -63,6 +63,8 @@ public class SalesController {
     @FXML
     private TableColumn<CartItem, String> colLaboratorio;
     @FXML
+    private TableColumn<CartItem, String> colCategoria;
+    @FXML
     private TableColumn<CartItem, Integer> colCantidad;
     @FXML
     private TableColumn<CartItem, String> colPrecio;
@@ -88,6 +90,9 @@ public class SalesController {
         colProducto.setCellValueFactory(new PropertyValueFactory<>("nombreProducto"));
         colCompuestos.setCellValueFactory(new PropertyValueFactory<>("compuestos"));
         colLaboratorio.setCellValueFactory(new PropertyValueFactory<>("laboratorio"));
+        if (colCategoria != null) {
+            colCategoria.setCellValueFactory(new PropertyValueFactory<>("categoria"));
+        }
         colCantidad.setCellValueFactory(new PropertyValueFactory<>("cantidad"));
         colPrecio.setCellValueFactory(new PropertyValueFactory<>("precio"));
 
@@ -141,7 +146,7 @@ public class SalesController {
             LocalTime time = LocalTime.now();
             
             DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-            DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+            DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
             
             clockLabel.setText(date.format(dateFormatter) + " - " + time.format(timeFormatter));
         }), new KeyFrame(Duration.seconds(1)));
@@ -316,16 +321,33 @@ public class SalesController {
             comprarRepository.save(compra);
         }
 
-        // 3. Imprimir y abrir caja (Facade)
-        List<Comprar> purchasedItems = comprarRepository.findById_IdTicket(ticket.getIdTicket());
+        // 3. Abrir cajón de dinero
         hardwareFacade.openCashDrawer();
-        hardwareFacade.printReceipt(ticket, purchasedItems);
 
         // 4. Limpiar UI
         cartTable.getItems().clear();
         currentSelectedItem = null;
         updateSelectionUI();
         updateTotal();
-        showAlert(Alert.AlertType.INFORMATION, "Venta Exitosa", "La venta se registró correctamente.");
+
+        // 5. Ofrecer imprimir ticket al usuario (para ahorrar papel/tinta)
+        Alert confirmPrint = new Alert(Alert.AlertType.CONFIRMATION);
+        confirmPrint.setTitle("Venta Exitosa");
+        confirmPrint.setHeaderText("¡Venta registrada con éxito! (Folio #" + ticket.getIdTicket() + ")");
+        confirmPrint.setContentText("¿Desea imprimir el ticket de compra?");
+
+        ButtonType btnImprimir = new ButtonType("Imprimir Ticket");
+        ButtonType btnNoImprimir = new ButtonType("No Imprimir", ButtonBar.ButtonData.CANCEL_CLOSE);
+        confirmPrint.getButtonTypes().setAll(btnImprimir, btnNoImprimir);
+
+        Optional<ButtonType> printChoice = confirmPrint.showAndWait();
+        if (printChoice.isPresent() && printChoice.get() == btnImprimir) {
+            try {
+                List<Comprar> purchasedItems = comprarRepository.findById_IdTicket(ticket.getIdTicket());
+                hardwareFacade.printReceipt(ticket, purchasedItems);
+            } catch (Exception e) {
+                showAlert(Alert.AlertType.ERROR, "Fallo al Imprimir", "No se pudo comunicar con la impresora: " + e.getMessage());
+            }
+        }
     }
 }

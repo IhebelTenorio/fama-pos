@@ -18,10 +18,11 @@
         <TableView fx:id="cartTable" VBox.vgrow="ALWAYS" styleClass="sales-table">
             <columns>
                 <TableColumn fx:id="colCodigo" text="Codigo" prefWidth="150"/>
-                <TableColumn fx:id="colProducto" text="Producto" prefWidth="250"/>
-                <TableColumn fx:id="colCantidad" text="Cantidad" prefWidth="100"/>
-                <TableColumn fx:id="colPrecio" text="Precio" prefWidth="120"/>
+                <TableColumn fx:id="colProducto" text="Producto" prefWidth="240"/>
+                <TableColumn fx:id="colCantidad" text="Cantidad" prefWidth="90"/>
+                <TableColumn fx:id="colPrecio" text="Precio" prefWidth="110"/>
                 <TableColumn fx:id="colLaboratorio" text="Laboratorio" prefWidth="150"/>
+                <TableColumn fx:id="colCategoria" text="Categoría" prefWidth="150"/>
                 <TableColumn fx:id="colCompuestos" text="Compuesto(s) y gramaje(s)" prefWidth="250"/>
             </columns>
             <columnResizePolicy>
